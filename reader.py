@@ -49,9 +49,12 @@ class Reader:
         return self.reader.loc[self.reader[self.args.relatedCol] == self.args.team]
 
     def get_cols(self, df: pd.DataFrame):
-        return df.loc[:, self.args.cols]
+        return df.loc[:, self.args.cols].values.tolist()
 
-def call_reader():
+# tested with: 
+# python3 -u reader.py --file="France" --team="Nantes" --relatedCol="HomeTeam" --cols 'FTHG' (v1)
+# python3 -u reader.py -f="France" -t="Nantes" -rc="HomeTeam" -c 'FTHG' (v2)
+if __name__ == '__main__':
     rdr = Reader(read_args())
     rdr.fetch_files('data', 'csv')
     rdr.read()
@@ -59,9 +62,3 @@ def call_reader():
         rows = rdr.get_rows()
         cols = rdr.get_cols(rows)
         print(cols)
-
-# tested with: 
-# python3 -u reader.py --file="France" --team="Nantes" --relatedCol="HomeTeam" --cols 'FTHG' (v1)
-# python3 -u reader.py -f="France" -t="Nantes" -rc="HomeTeam" -c 'FTHG' (v2)
-if __name__ == '__main__':
-    call_reader()
