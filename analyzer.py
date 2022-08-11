@@ -1,6 +1,8 @@
+from pprint import pprint
 import numpy as np
 import matplotlib.pyplot as plt
 from reader import read_args, Reader
+
 
 class Analyzer:
 
@@ -8,11 +10,14 @@ class Analyzer:
         self.reader = reader
         self.data = []
         self.functions = {
-            'mean': lambda x: np.mean(x),
-            'average': lambda x: np.average(x),
+            'unique': lambda x: list(np.unique(x)),
+            'median': lambda x: np.median(x),
+            'non-zeros': lambda x: np.count_nonzero(x),
+            'average': lambda x: round(np.average(x), 3),
             'max': lambda x: np.max(x),
             'min': lambda x: np.min(x),
-            'standard deviation': lambda x: np.std(x)
+            'standard deviation': lambda x: round(np.std(x), 3),
+            'variance': lambda x: np.var(x)
         }
 
     def prepare_reader(self):
@@ -37,15 +42,18 @@ class Analyzer:
 
             self.data = [data[key] for key in data.keys()]
 
-    def calculate(self, what: str) -> str:
-        if what not in list(self.functions.keys()):
-            return '0'
-        res = f'Pieces of data on {self.reader.args.team} (2021-2022 season):\n'
-        for elt in self.data:
-            index = self.data.index(elt)
-            names = [name for name in self.reader.args.cols]
-            res += f'{what} for {names[index]}: {self.functions[what](elt)}\n'
-        return res
+    def print_statistics(self) -> str:
+        team = self.reader.args.team
+        functions = list(self.functions.keys())
+        data = self.data
+        cols = self.reader.args.cols
+        json = {team: {
+            col: {
+                func: self.functions[func](data[cols.index(col)]) for func in functions
+                } for col in cols
+            }
+        }
+        pprint(json, width=70)
 
 # previously tested with: 
 # python3 -u analyzer.py --file="France" --team="Nantes" --relatedCol="HomeTeam" --cols 'FTHG' (v1)
@@ -58,4 +66,4 @@ if __name__ == '__main__':
     analyzer = Analyzer(reader)
     analyzer.prepare_reader()
     analyzer.fetch_data()
-    print(analyzer.calculate('mean'))
+    analyzer.print_statistics()
