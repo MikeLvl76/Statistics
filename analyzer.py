@@ -22,8 +22,22 @@ def get_one_col(df, col: str):
 def get_mean_of(col: list or tuple):
     return round(np.mean(col), 5)
 
+# draw plot using csv cols as values
+def draw(title: str, values: list or tuple, xlabel: str = '', ylabel: str = ''):
+    plt.title(title)
+    plt.xticks(np.arange(len(col)), np.arange(1, len(col)+1))
+    plt.yticks(np.arange(0, max(col) + 1))
+    if xlabel != '':
+        plt.xlabel(xlabel)
+    if ylabel != '':
+        plt.ylabel(ylabel)
+    plt.plot(values, 'r--', linewidth=2.0)
+    plt.grid()
+    plt.show()
 
 if __name__ == '__main__':
-    rows = get_rows(reader, 'HomeTeam', 'Arsenal')
+    team = 'Chelsea'
+    rows = get_rows(reader, 'HomeTeam', team)
     col = list(get_one_col(rows, 'FTHG'))
     print(col)
+    draw(f'Goals scored at home by {team} during first leg of season 2021-2022', col, 'Matches', 'Goals')
