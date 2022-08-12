@@ -1,6 +1,6 @@
 # Some results
 
-With command:
+## With command
 -  `python3 -u analyzer.py -f="France" -t="Nantes" -rc="HomeTeam" -c 'FTHG' 'FTAG' 'HTHG'`
 
 ```
@@ -34,6 +34,10 @@ With command:
 ```
 
 With use of [pprint](https://docs.python.org/3/library/pprint.html) as output function
+
+## By drawing plots
+
+![results](/results/nantes.png)
 
 # Used libraries 
 
