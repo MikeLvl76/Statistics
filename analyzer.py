@@ -74,7 +74,7 @@ class Analyzer:
 # python3 -u analyzer.py --file="France" --team="Nantes" --relatedCol="HomeTeam" --cols 'FTHG' (v1)
 # python3 -u analyzer.py -f="France" -t="Nantes" -rc="HomeTeam" -c 'FTHG' (v2)
 
-# now tested with : python3 -u analyzer.py -f="France" -t="Nantes" -rc="HomeTeam" -c 'FTHG' 'FTAG' 'HTHG' 'HTAG'
+# now tested with : python3 -u analyzer.py -f="France" -t="Nantes" -rc="HomeTeam" -c 'FTHG' 'HTHG'
 if __name__ == '__main__':
     args = read_args()
     reader = Reader(args)
