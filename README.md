@@ -38,6 +38,7 @@ With use of [pprint](https://docs.python.org/3/library/pprint.html) as output fu
 ## By drawing plots
 
 ![results](/results/nantes.png)
+![results2](/results/arsenal.png)
 
 # Used libraries 
 

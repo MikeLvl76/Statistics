@@ -52,29 +52,34 @@ class Analyzer:
 
     def draw_statistics(self):
         data = self.data
-        plt.title(f'Goals scored per match by {self.reader.args.team}')
-        plt.xticks(np.arange(len(data[0])), np.arange(1, len(data[0]) + 1))
-        plt.yticks(np.arange(0, max(data[0]) + 1))
+        fig, axs = plt.subplots(2)
+        fig.suptitle(f'Goals scored and conceded per match by {self.reader.args.team}')
 
-        plt.xlabel('Match number')
-        plt.ylabel('Goals scored')
+        axs[0].set_title('Goals scored at home')
+        axs[1].set_title('Goals conceded at home')
+
+        for ax in axs:
+            ax.set_xticks(np.arange(len(data[0])), np.arange(1, len(data[0]) + 1))
+            ax.set_yticks(np.arange(0, max(data[0]) + 1))
+            ax.set_xlabel('Match number')
+            ax.set_ylabel('Goals scored')
+            ax.label_outer()
+            ax.grid()
+            
 
         colors = iter(cm.rainbow(np.linspace(0, 1, len(data))))
         cols = self.reader.args.cols
 
-        for d in data:
+        for k in range(int(len(data) / 2)):
             color = next(colors)
-            plt.plot(d, color=color, linewidth=1.5, label=cols[data.index(d)])
+            axs[0].plot(data[k], color=color, linewidth=1.5, label=cols[data.index(data[k])])
+            axs[0].legend()
+            axs[1].plot(data[k + 2], color=color, linewidth=1.5, label=cols[data.index(data[k + 2])])
+            axs[1].legend()
 
-        plt.legend(loc="upper left")
-        plt.grid()
         plt.show()
 
-# previously tested with: 
-# python3 -u analyzer.py --file="France" --team="Nantes" --relatedCol="HomeTeam" --cols 'FTHG' (v1)
-# python3 -u analyzer.py -f="France" -t="Nantes" -rc="HomeTeam" -c 'FTHG' (v2)
-
-# now tested with : python3 -u analyzer.py -f="France" -t="Nantes" -rc="HomeTeam" -c 'FTHG' 'HTHG'
+# new version: python3 -u analyzer.py -f="England" -t="Arsenal" -rc="HomeTeam" -c 'FTHG' 'HTHG' 'FTAG' 'HTAG'
 if __name__ == '__main__':
     args = read_args()
     reader = Reader(args)
