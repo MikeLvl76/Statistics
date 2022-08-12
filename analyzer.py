@@ -1,8 +1,8 @@
 from pprint import pprint
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.pyplot import cm
 from reader import read_args, Reader
-
 
 class Analyzer:
 
@@ -50,6 +50,26 @@ class Analyzer:
         }
         pprint(json, width=70)
 
+    def draw_statistics(self):
+        data = self.data
+        plt.title(f'Goals scored per match by {self.reader.args.team}')
+        plt.xticks(np.arange(len(data[0])), np.arange(1, len(data[0]) + 1))
+        plt.yticks(np.arange(0, max(data[0]) + 1))
+
+        plt.xlabel('Match number')
+        plt.ylabel('Goals scored')
+
+        colors = iter(cm.rainbow(np.linspace(0, 1, len(data))))
+        cols = self.reader.args.cols
+
+        for d in data:
+            color = next(colors)
+            plt.plot(d, color=color, linewidth=1.5, label=cols[data.index(d)])
+
+        plt.legend(loc="upper left")
+        plt.grid()
+        plt.show()
+
 # previously tested with: 
 # python3 -u analyzer.py --file="France" --team="Nantes" --relatedCol="HomeTeam" --cols 'FTHG' (v1)
 # python3 -u analyzer.py -f="France" -t="Nantes" -rc="HomeTeam" -c 'FTHG' (v2)
@@ -62,3 +82,4 @@ if __name__ == '__main__':
     analyzer.prepare_reader()
     analyzer.fetch_data()
     analyzer.print_statistics()
+    analyzer.draw_statistics()
