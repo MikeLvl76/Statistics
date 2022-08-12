@@ -12,7 +12,6 @@ class Analyzer:
         self.functions = {
             'unique': lambda x: list(np.unique(x)),
             'median': lambda x: np.median(x),
-            'non-zeros': lambda x: np.count_nonzero(x),
             'average': lambda x: round(np.average(x), 3),
             'max': lambda x: np.max(x),
             'min': lambda x: np.min(x),
@@ -32,13 +31,9 @@ class Analyzer:
             step = len(cols[0])
             flatten = [item for sub in cols for item in sub]
             data = {i: [] for i in range(step)}
-            index = 0
 
             for k in range(len(flatten)):
-                if k % step == 0:
-                    data[index].append(flatten[k])
-                else:
-                    data[k % step].append(flatten[k])
+                data[k % step].append(flatten[k])
 
             self.data = [data[key] for key in data.keys()]
 
